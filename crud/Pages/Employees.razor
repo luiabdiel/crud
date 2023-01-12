@@ -1,0 +1,44 @@
+﻿@page "/employees"
+@inject crud.Data.IEmployeeService EmployeeService;
+
+<h3>Todos os funcionários</h3>
+
+<a href="employee/0">Adicionar novo funcionário </a>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var employee in employees) {
+            <tr>
+                <td>@employee.Id</td>
+                <td>@employee.Name</td>
+                <td>
+                    <a href="employee/@employee.Id">Edit</a>
+                </td>
+                <td>
+                    <button @onclick="@(e => OnDelete(employee.Id))">Deletar</button>    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<crud.Data.Employee> employees;
+
+    protected override void OnInitialized()
+    {
+        employees = EmployeeService.GetEmployees();
+    }
+
+    private void OnDelete(Guid id)
+    {
+        EmployeeService.DeleteEmployee(id);
+    }
+}
